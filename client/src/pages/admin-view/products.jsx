@@ -35,72 +35,72 @@ function AdminProducts() {
     const [openCreateProductsDialog, setOpenCreateProductsDialog] =
         useState(false);
     const [formData, setFormData] = useState(initialFormData);
-    // const [imageFile, setImageFile] = useState(null);
-    // const [uploadedImageUrl, setUploadedImageUrl] = useState("");
-    // const [imageLoadingState, setImageLoadingState] = useState(false);
-    // const [currentEditedId, setCurrentEditedId] = useState(null);
+    const [imageFile, setImageFile] = useState(null);
+    const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+    const [imageLoadingState, setImageLoadingState] = useState(false);
+    const [currentEditedId, setCurrentEditedId] = useState(null);
 
-    // const { productList } = useSelector((state) => state.adminProducts);
-    // const dispatch = useDispatch();
-    // const { toast } = useToast();
+    const { productList } = useSelector((state) => state.adminProducts);
+    const dispatch = useDispatch();
+    const { toast } = useToast();
 
     function onSubmit(event) {
-        event.preventDefault(); 
+        event.preventDefault();
 
-    //     currentEditedId !== null
-    //         ? dispatch(
-    //             editProduct({
-    //                 id: currentEditedId,
-    //                 formData,
-    //             })
-    //         ).then((data) => {
-    //             console.log(data, "edit");
+        currentEditedId !== null
+            ? dispatch(
+                editProduct({
+                    id: currentEditedId,
+                    formData,
+                })
+            ).then((data) => {
+                console.log(data, "edit");
 
-    //             if (data?.payload?.success) {
-    //                 dispatch(fetchAllProducts());
-    //                 setFormData(initialFormData);
-    //                 setOpenCreateProductsDialog(false);
-    //                 setCurrentEditedId(null);
-    //             }
-    //         })
-    //         : dispatch(
-    //             addNewProduct({
-    //                 ...formData,
-    //                 image: uploadedImageUrl,
-    //             })
-    //         ).then((data) => {
-    //             if (data?.payload?.success) {
-    //                 dispatch(fetchAllProducts());
-    //                 setOpenCreateProductsDialog(false);
-    //                 setImageFile(null);
-    //                 setFormData(initialFormData);
-    //                 toast({
-    //                     title: "Product add successfully",
-    //                 });
-    //             }
-    //         });
-    // }
-
-    // function handleDelete(getCurrentProductId) {
-    //     dispatch(deleteProduct(getCurrentProductId)).then((data) => {
-    //         if (data?.payload?.success) {
-    //             dispatch(fetchAllProducts());
-    //         }
-    //     });
+                if (data?.payload?.success) {
+                    dispatch(fetchAllProducts());
+                    setFormData(initialFormData);
+                    setOpenCreateProductsDialog(false);
+                    setCurrentEditedId(null);
+                }
+            })
+            : dispatch(
+                addNewProduct({
+                    ...formData,
+                    image: uploadedImageUrl,
+                })
+            ).then((data) => {
+                if (data?.payload?.success) {
+                    dispatch(fetchAllProducts());
+                    setOpenCreateProductsDialog(false);
+                    setImageFile(null);
+                    setFormData(initialFormData);
+                    toast({
+                        title: "Product add successfully",
+                    });
+                }
+            });
     }
 
-    // function isFormValid() {
-    //     return Object.keys(formData)
-    //         .filter((currentKey) => currentKey !== "averageReview")
-    //         .map((key) => formData[key] !== "")
-    //         .every((item) => item);
-    // }
+    function handleDelete(getCurrentProductId) {
+        dispatch(deleteProduct(getCurrentProductId)).then((data) => {
+            if (data?.payload?.success) {
+                dispatch(fetchAllProducts());
+            }
+        });
+    }
 
-    // useEffect(() => {
-    //     dispatch(fetchAllProducts());
-    // }, [dispatch]);
+    function isFormValid() {
+        return Object.keys(formData)
+            .filter((currentKey) => currentKey !== "averageReview")
+            .map((key) => formData[key] !== "")
+            .every((item) => item);
+    }
 
-    // console.log(formData, "productList");
+    useEffect(() => {
+        dispatch(fetchAllProducts());
+    }, [dispatch]);
+
+    console.log(formData, "productList");
 
     return (
         <Fragment>
@@ -157,7 +157,7 @@ function AdminProducts() {
                     </div>
                 </SheetContent>
             </Sheet>
-        </Fragment>        
+        </Fragment>
     );
 }
 
